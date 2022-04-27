@@ -17,8 +17,8 @@ motor motorNew(char port)
     {
         while ((dir = readdir(d)) != NULL)
         {
-            // match 'mo' (from 'motor') in dir->d_name to locate motor directories
-            if (dir->d_name[0] == 'm' && dir->d_name[1] == 'o') {
+            // match 'm' (from "motor") in dir->d_name to locate motor directories
+            if (dir->d_name[0] == 'm') {
                 char mdname[256] = PREFIX;
                 char mdnamec[256], addr_raw[5];
                 strcat(mdname, dir->d_name);
