@@ -1,2 +1,2 @@
-main: main.c motor.c
-	gcc motor.c main.c -o main
+main: main.c motor.c sensor.c
+	gcc motor.c sensor.c main.c -o main

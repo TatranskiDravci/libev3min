@@ -1,20 +1,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "motor.h"
+#include "sensor.h"
 
 int main(int argc, char *argv[])
 {
-    motor m;
-    m = motorNew('C');
+    sensor s;
+    s = sensorNew('1');
+    
+    if (!s.exists) return 1;
 
-    if (!m.exists) return 1;
+    double value0, value1;
+    value0 = sensorReadDecimal(s, '0');
+    printf("%f\n", value0);
 
-    motorSetTarget(m, 100);
-    motorSetSpeed(m, 300);
-    motorSetStopAction(m, "brake");
-    motorCommand(m, "run-to-abs-pos");
+    sensorReset(&s);
+    value0 = sensorReadDecimal(s, '0');
+    value1 = sensorReadDecimal(s, '1');
 
-    while (motorState(m) & RUNNING);
+    printf("%f %f\n", value0, value1);
 
     return 0;
 }

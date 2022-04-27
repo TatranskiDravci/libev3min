@@ -57,17 +57,19 @@ motor motorNew(char port)
     return m;
 }
 
-void motorSetPosition(motor m, int position) {
+void motorSetPosition(motor m, int position)
+{
     FILE *fp;
     fp= fopen(m.position, "w");
     fprintf(fp, "%d", position);
     fclose(fp);
 }
 
-int motorPosition(motor m) {
+int motorPosition(motor m)
+{
     FILE *fp;
     int position;
-    fp= fopen(m.position, "r");
+    fp = fopen(m.position, "r");
     fscanf(fp, "%d", &position);
     fclose(fp);
     return position;
@@ -76,7 +78,7 @@ int motorPosition(motor m) {
 void motorSetTarget(motor m, int target)
 {
     FILE *fp;
-    fp= fopen(m.target_sp, "w");
+    fp = fopen(m.target_sp, "w");
     fprintf(fp, "%d", target);
     fclose(fp);
 }
@@ -84,7 +86,7 @@ void motorSetTarget(motor m, int target)
 void motorSetSpeed(motor m, int speed)
 {
     FILE *fp;
-    fp= fopen(m.speed_sp, "w");
+    fp = fopen(m.speed_sp, "w");
     fprintf(fp, "%d", speed);
     fclose(fp);
 }
@@ -92,7 +94,7 @@ void motorSetSpeed(motor m, int speed)
 void motorCommand(motor m, char *command)
 {
     FILE *fp;
-    fp= fopen(m.command, "w");
+    fp = fopen(m.command, "w");
     fprintf(fp, "%s", command);
     fclose(fp);
 }
@@ -100,7 +102,7 @@ void motorCommand(motor m, char *command)
 void motorSetStopAction(motor m, char *stop_action)
 {
     FILE *fp;
-    fp= fopen(m.stop_action, "w");
+    fp = fopen(m.stop_action, "w");
     fprintf(fp, "%s", stop_action);
     fclose(fp);
 }

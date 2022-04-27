@@ -11,7 +11,7 @@
 #ifndef MOTOR_H
 #define MOTOR_H
 
-#define PREFIX "./env/"                                 // sensor driver files prefix
+#define PREFIX "./env/"                                 // motor driver files prefix
 
 // motor state bit-masks - to check if motor matches the state, use `state & BITMASK` (p.v. 0, 1...)
 #define RUNNING 0b1000
@@ -29,7 +29,8 @@ typedef struct Motor
     char position[256];                                 // position file path
     char state[256];                                    // state file path
     int exists;                                         // motor existence (p.v. 1 - exists, 0 - does not exist)
-} motor;
+}
+motor;
 
 motor motorNew(char port);                              // `motor` constructor, initializes `motor` type
 void motorSetPosition(motor m, int position);           // sets motor position variable to `position`
