@@ -55,11 +55,11 @@ sensor sensorNew(char port)
                     for (int i = 0; i < atoi(val); i++) s.decimal *= 0.1;
                     fclose(fp);
 
-                    // cache number of values
-                    fp = fopen(s.num_values, "r");
-                    fgets(val, 50, fp);
-                    s.value_count = atoi(val);
-                    fclose(fp);
+                    // cache number of values - uncomment if need be
+                    // fp = fopen(s.num_values, "r");
+                    // fgets(val, 50, fp);
+                    // s.value_count = atoi(val);
+                    // fclose(fp);
 
                     // cache length of `s.value` and shift null terminator
                     s.value_len = strlen(s.value);  
@@ -96,21 +96,11 @@ void sensorReset(sensor *s)
     for (int i = 0; i < atoi(val); i++) s->decimal *= 0.1;
     fclose(fp);
 
-    // cache number of values
-    fp = fopen(s->num_values, "r");
-    fgets(val, 50, fp);
-    s->value_count = atoi(val);
-    fclose(fp);
-
-    // set all values in value<N> to "0"
-    for (int i = 0; i < s->value_count; i++)
-    {
-        // convert iterator to ascii char
-        s->value[s->value_len] = ((char) i) + 48;
-        fp = fopen(s->value, "w");
-        fprintf(fp, "0");
-        fclose(fp);
-    }
+    // cache number of values - uncomment if need be
+    // fp = fopen(s->num_values, "r");
+    // fgets(val, 50, fp);
+    // s->value_count = atoi(val);
+    // fclose(fp);
 }
 
 void sensorCommand(sensor s, char *command)

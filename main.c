@@ -5,17 +5,18 @@
 
 int main(int argc, char *argv[])
 {
-    motor m;
-    m = motorNew('D');
+    sensor s;
+    s = sensorNew('1');
+    
+    if (!s.exists) return 1;
 
-    if (!m.exists) return 1;
+    printf("%f\n", sensorReadDecimal(s, '0'));
 
-    motorSetTarget(m, 360);
-    motorSetSpeed(m, 100);
-    motorSetStopAction(m, "brake");
-    motorCommand(m, "run-to-rel-pos");
+    sensorSetMode(s, "GYRO-RATE");
+    sensorSetMode(s, "GYRO-ANG");
+    sensorReset(&s);
 
-    while (motorState(m) & RUNNING);
+    printf("%f\n", sensorReadDecimal(s, '0'));
 
     return 0;
 }

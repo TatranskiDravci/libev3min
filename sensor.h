@@ -25,7 +25,7 @@ typedef struct Sensor
     char num_values[256];                               // num_values file path
     double decimal;                                     // decimals constant
     int value_len;                                      // strlen() of value
-    int value_count;                                    // number of read values for the given sensor mode
+    // int value_count;                                    // number of read values for the given sensor mode - uncomment if need be
     int exists;                                         // sensor existence (p.v. 1 - exists, 0 - does not exist)
 }
 sensor;
