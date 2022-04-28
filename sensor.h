@@ -14,7 +14,7 @@
 #ifndef SENSOR_H
 #define SENSOR_H
 
-#define PREFIX "./env/"                                 // motor driver files prefix
+#define SENSOR_PREFIX "/sys/class/lego-sensor/"
 
 typedef struct Sensor
 {

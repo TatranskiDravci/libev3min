@@ -11,7 +11,7 @@ motor motorNew(char port)
 
     DIR *d;
     struct dirent *dir;
-    d = opendir(PREFIX);
+    d = opendir(MOTOR_PREFIX);
 
     if (d)
     {
@@ -19,18 +19,18 @@ motor motorNew(char port)
         {
             // match 'm' (from "motor") in dir->d_name to locate motor directories
             if (dir->d_name[0] == 'm') {
-                char mdname[256] = PREFIX;
-                char mdnamec[256], addr_raw[5];
+                char mdname[256] = MOTOR_PREFIX;
+                char mdnamec[256], addr_raw[15];
                 strcat(mdname, dir->d_name);
                 strcpy(mdnamec, mdname);            // copy mdname to mdnamec
                 strcat(mdname, "/address");         // get mdname'/address' file path
 
                 FILE *addr_fp;
                 addr_fp = fopen(mdname, "r");
-                fgets(addr_raw, 5, addr_fp);        // read address
+                fgets(addr_raw, 15, addr_fp);        // read address
 
                 // check if found motor port matches given port
-                if (port == addr_raw[3])
+                if (port == addr_raw[13])
                 {
                     // copy addr. and concat. aprrop. file names
                     strcpy(m.speed_sp, mdnamec);
@@ -115,11 +115,15 @@ int motorState(motor m)
     FILE *fp;
     fp = fopen(m.state, "r");
 
-    char c;
-    while ((c = fgetc(fp)) != EOF)
+    char states[256];
+    fgets(states, 256, fp);
+    fclose(fp);
+
+    char *c = states;
+    while (*c != '\0')
     {
         // "mask" bits based on characters unique for each state
-        switch (c)
+        switch (*c)
         {
             case 'u':
                 state_mask |= RUNNING;
@@ -134,7 +138,7 @@ int motorState(motor m)
                 state_mask |= STALLED;
                 break;
         }
+        c++;
     }
-    fclose(fp);
     return state_mask;
 }

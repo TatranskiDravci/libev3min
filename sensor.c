@@ -12,7 +12,7 @@ sensor sensorNew(char port)
 
     DIR *d;
     struct dirent *dir;
-    d = opendir(PREFIX);
+    d = opendir(SENSOR_PREFIX);
 
     if (d)
     {
@@ -20,18 +20,18 @@ sensor sensorNew(char port)
         {
             // match 's' (from "sensor") in dir->d_name to locate sensor directories
             if (dir->d_name[0] == 's') {
-                char mdname[256] = PREFIX;
-                char mdnamec[256], addr_raw[4];
+                char mdname[256] = SENSOR_PREFIX;
+                char mdnamec[256], addr_raw[14];
                 strcat(mdname, dir->d_name);
                 strcpy(mdnamec, mdname);            // copy mdname to mdnamec
                 strcat(mdname, "/address");         // get mdname'/address' file path
 
                 FILE *addr_fp;
                 addr_fp = fopen(mdname, "r");
-                fgets(addr_raw, 4, addr_fp);        // read address
+                fgets(addr_raw, 14, addr_fp);        // read address
 
                 // check if found sensor port matches given port
-                if (port == addr_raw[2])
+                if (port == addr_raw[12])
                 {
                     // copy addr. and concat. aprrop. file names
                     strcpy(s.command, mdnamec);
@@ -61,7 +61,6 @@ sensor sensorNew(char port)
                     s.value_count = atoi(val);
                     fclose(fp);
 
-
                     // cache length of `s.value` and shift null terminator
                     s.value_len = strlen(s.value);  
                     s.value[s.value_len + 1] = '\0';
@@ -73,7 +72,7 @@ sensor sensorNew(char port)
         }
         closedir(d);
     }
-    if (!s.exists) printf("sensor not found on port %c\n", port);
+    if (!s.exists) printf("Sensor not found on port %c\n", port);
     return s;
 }
 
@@ -131,6 +130,7 @@ int sensorRead(sensor s, char n)
     char val[50];
     fgets(val, 50, fp);
 
+    fclose(fp);
     return atoi(val);
 }
 

@@ -5,20 +5,17 @@
 
 int main(int argc, char *argv[])
 {
-    sensor s;
-    s = sensorNew('1');
-    
-    if (!s.exists) return 1;
+    motor m;
+    m = motorNew('D');
 
-    double value0, value1;
-    value0 = sensorReadDecimal(s, '0');
-    printf("%f\n", value0);
+    if (!m.exists) return 1;
 
-    sensorReset(&s);
-    value0 = sensorReadDecimal(s, '0');
-    value1 = sensorReadDecimal(s, '1');
+    motorSetTarget(m, 360);
+    motorSetSpeed(m, 100);
+    motorSetStopAction(m, "brake");
+    motorCommand(m, "run-to-rel-pos");
 
-    printf("%f %f\n", value0, value1);
+    while (motorState(m) & RUNNING);
 
     return 0;
 }
