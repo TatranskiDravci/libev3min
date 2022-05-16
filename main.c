@@ -1,22 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "motor.h"
 #include "sensor.h"
 
 int main(int argc, char *argv[])
 {
-    sensor s;
-    s = sensorNew('1');
+    motor m;
+    m = motorNew('A');
     
-    if (!s.exists) return 1;
+    if (!m.exists) return 1;
 
-    printf("%f\n", sensorReadDecimal(s, '0'));
+    motorReset(m);
+    motorSetSpeed(m, 200);
+    motorSetTarget(m, 360);
+    motorSetStopAction(m, "hold");
+    motorCommand(m, "run-to-rel-pos");
 
-    sensorSetMode(s, "GYRO-RATE");
-    sensorSetMode(s, "GYRO-ANG");
-    sensorReset(&s);
-
-    printf("%f\n", sensorReadDecimal(s, '0'));
+    while (motorState(m) & RUNNING);
 
     return 0;
 }
