@@ -47,22 +47,16 @@ sensor sensorNew(char port)
 
                     // cache decimals
                     FILE *fp;
-                    char val[50];
+                    char val[4];
                     fp = fopen(s.decimals, "r");
-                    fgets(val, 50, fp);
+                    fgets(val, 4, fp);
 
                     s.decimal = 1;
                     for (int i = 0; i < atoi(val); i++) s.decimal *= 0.1;
                     fclose(fp);
 
-                    // cache number of values - uncomment if need be
-                    // fp = fopen(s.num_values, "r");
-                    // fgets(val, 50, fp);
-                    // s.value_count = atoi(val);
-                    // fclose(fp);
-
                     // cache length of `s.value` and shift null terminator
-                    s.value_len = strlen(s.value);  
+                    s.value_len = strlen(s.value);
                     s.value[s.value_len + 1] = '\0';
                     s.exists = 1;
                     break;
@@ -88,19 +82,13 @@ void sensorReset(sensor *s)
 {
     // update decimals
     FILE *fp;
-    char val[50];
+    char val[4];
     fp = fopen(s->decimals, "r");
-    fgets(val, 50, fp);
+    fgets(val, 4, fp);
 
     s->decimal = 1;
     for (int i = 0; i < atoi(val); i++) s->decimal *= 0.1;
     fclose(fp);
-
-    // cache number of values - uncomment if need be
-    // fp = fopen(s->num_values, "r");
-    // fgets(val, 50, fp);
-    // s->value_count = atoi(val);
-    // fclose(fp);
 }
 
 void sensorCommand(sensor s, char *command)
@@ -116,9 +104,9 @@ int sensorRead(sensor s, char n)
     FILE *fp;
     s.value[s.value_len] = n;
     fp = fopen(s.value, "r");
-    
-    char val[50];
-    fgets(val, 50, fp);
+
+    char val[10];
+    fgets(val, 10, fp);
 
     fclose(fp);
     return atoi(val);

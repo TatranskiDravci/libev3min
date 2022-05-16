@@ -11,7 +11,7 @@
 #ifndef MOTOR_H
 #define MOTOR_H
 
-#define MOTOR_PREFIX "/sys/class/tacho-motor/"
+#include "config.h"
 
 // motor state bit-masks - to check if motor matches the state, use `state & BITMASK` (p.v. 0, 1...)
 #define RUNNING 0b1000
@@ -22,12 +22,12 @@
 
 typedef struct Motor
 {
-    char speed_sp[256];                                 // speed setpoint file path
-    char target_sp[256];                                // target setpoint file path
-    char command[256];                                  // command file path
-    char stop_action[256];                              // stop action file path
-    char position[256];                                 // position file path
-    char state[256];                                    // state file path
+    char speed_sp[PATH_LEN];                            // speed setpoint file path
+    char target_sp[PATH_LEN];                           // target setpoint file path
+    char command[PATH_LEN];                             // command file path
+    char stop_action[PATH_LEN];                         // stop action file path
+    char position[PATH_LEN];                            // position file path
+    char state[PATH_LEN];                               // state file path
     int exists;                                         // motor existence (p.v. 1 - exists, 0 - does not exist)
 }
 motor;
