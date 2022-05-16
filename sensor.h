@@ -19,10 +19,10 @@
 typedef struct Sensor
 {
     char command[PATH_LEN];                             // command file path
-    char value[PATH_LEN];                                    // value<N> file path
-    char mode[PATH_LEN];                                     // mode file path
-    char decimals[PATH_LEN];                                 // decimlas file path
-    char num_values[PATH_LEN];                               // num_values file path
+    char value[PATH_LEN];                               // value<N> file path
+    char mode[PATH_LEN];                                // mode file path
+    char decimals[PATH_LEN];                            // decimals file path
+    char num_values[PATH_LEN];                           // num_values file path
     double decimal;                                     // decimals constant
     int value_len;                                      // strlen() of value
     int exists;                                         // sensor existence (p.v. 1 - exists, 0 - does not exist)
