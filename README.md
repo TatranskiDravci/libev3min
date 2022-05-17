@@ -1,2 +1,2 @@
 # cdrivers
-Bare minimum EV3 drivers in C/C++
+Minimal EV3 drivers in C/C++
