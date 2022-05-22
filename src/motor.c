@@ -1,6 +1,7 @@
 #include "motor.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <dirent.h>
 
@@ -28,6 +29,7 @@ motor motorNew(char port)
                 FILE *addr_fp;
                 addr_fp = fopen(mdname, "r");
                 fgets(addr_raw, 15, addr_fp);        // read address
+                fclose(addr_fp);
 
                 // check if found motor port matches given port
                 if (port == addr_raw[13])
@@ -48,11 +50,11 @@ motor motorNew(char port)
                     m.exists = 1;
                     break;
                 }
-                fclose(addr_fp);
             }
         }
-        closedir(d);
     }
+    
+    closedir(d);
     if (!m.exists) printf("Motor not found on port %c\n", port);
     return m;
 }

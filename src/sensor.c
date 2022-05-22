@@ -29,6 +29,7 @@ sensor sensorNew(char port)
                 FILE *addr_fp;
                 addr_fp = fopen(mdname, "r");
                 fgets(addr_raw, 14, addr_fp);        // read address
+                fclose(addr_fp);
 
                 // check if found sensor port matches given port
                 if (port == addr_raw[12])
@@ -59,11 +60,12 @@ sensor sensorNew(char port)
                     s.exists = 1;
                     break;
                 }
-                fclose(addr_fp);
+
             }
         }
-        closedir(d);
     }
+    
+    closedir(d);
     if (!s.exists) printf("Sensor not found on port %c\n", port);
     return s;
 }
