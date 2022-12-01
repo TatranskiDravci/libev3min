@@ -4,6 +4,7 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
+#define BYTE 0xff
 
 controller controllerConnect(char *addr, int port)
 {
@@ -19,7 +20,7 @@ controller controllerConnect(char *addr, int port)
     }
 
     address.sin_family = AF_INET;
-    address.sin_port = (uint32_t) port;
+    address.sin_port = htons(port);
 
     if (inet_pton(AF_INET, addr, &address.sin_addr) <= 0)
     {
@@ -36,25 +37,33 @@ controller controllerConnect(char *addr, int port)
     return c;
 }
 
-int controllerGet(controller c, resource r)
+int controllerGet(controller c, char input_resource_id)
 {
-    char fetch = (char) r;
-    send(c.socket, &fetch, 1);
+    char fetch[2];
+    int value;
 
-    if (r >= LeverLX)
-    {
-        char buffer[2];
-        read(c.socket, buffer, 2);
+    fetch[0] = CRES_GET;
+    fetch[1] = input_resource_id;
 
-        int value;
-        value  = (int) buffer[1] + 127;
-        value *= (!buffer[0] - buffer[0]);
+    write(c.socket, fetch, 2);
+    read(c.socket, &value, 4);
 
-        return value;
-    }
+    return value;
+}
 
-    char value;
-    read(c.socket, &value, 1);
+void controllerSet(controller c, char output_resource_id, int value)
+{
+    char fetch[2];
 
-    return (int) value;
+    fetch[0] = CRES_SET;
+    fetch[1] = output_resource_id;
+
+    write(c.socket, fetch, 2);
+    write(c.socket, &value, 4);
+}
+
+void controllerDisconnect(controller c)
+{
+	close(c.socket);
+	close(c.client);
 }
