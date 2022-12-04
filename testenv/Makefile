@@ -1,4 +1,4 @@
-BUILD =  main.c ../src/motor.c ../src/sensor.c
+BUILD =  main.c ../src/motor.c ../src/sensor.c ../src/controller.c
 
 all: GNU-ARM GNU-x86_64
 
