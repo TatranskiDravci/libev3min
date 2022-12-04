@@ -30,7 +30,7 @@ sensor sensorNew(char port)
         fclose(address_fp);
 
         // check if found sensor port matches given port
-        if (port != address_buffer[12])
+        if (port == address_buffer[12])
         {
             // copy address and concatenate appropriate file names
             strCopyConcat(s.command, s_path_pure, "/command");
