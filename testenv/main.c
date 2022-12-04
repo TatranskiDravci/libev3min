@@ -17,7 +17,19 @@ int main(int argc, char *argv[])
     motorSetStopAction(m, "hold");
     motorCommand(m, "run-to-rel-pos");
 
-    while (motorState(m) & RUNNING);
+    int state;
+    state = motorState(m);
+
+    printf("state[%d]: ", state);
+    if (state & RAMPING) printf("ramping ");
+    if (state & HOLDING) printf("holding ");
+    if (state & STALLED) printf("stalled ");
+    if (state & RUNNING) printf("running");
+    printf("\n");
+
+    sensor s;
+    s = sensorNew('1');
+    printf("value: %f\n", sensorReadDecimal(s, '0'));
 
     return 0;
 }
