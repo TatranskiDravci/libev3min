@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "../src/motor.h"
-#include "../src/sensor.h"
+#include "../src/base/motor.h"
+#include "../src/base/sensor.h"
 
 int main(int argc, char *argv[])
 {

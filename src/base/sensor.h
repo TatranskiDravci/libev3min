@@ -1,6 +1,6 @@
 /*
     devnote:
-        Drivers should be kept in a bare-minimum state to ensure
+        base/ drivers should be kept in a bare-minimum state to ensure
         flexibility and efficiency. Avoid providing higher level
         functionality than necessary.
 
@@ -14,7 +14,7 @@
 #ifndef SENSOR_H
 #define SENSOR_H
 
-#include "config.h"
+#include "../config.h"
 
 typedef struct Sensor
 {

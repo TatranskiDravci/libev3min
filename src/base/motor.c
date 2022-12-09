@@ -5,7 +5,7 @@
 #include <string.h>
 #include <dirent.h>
 
-#include "shared.h"
+#include "../shared.h"
 
 motor motorNew(char port)
 {

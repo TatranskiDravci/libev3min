@@ -1,6 +1,6 @@
 /*
     devnote:
-        Drivers should be kept in a bare-minimum state to ensure
+        base/ drivers should be kept in a bare-minimum state to ensure
         flexibility and efficiency. Avoid providing higher level
         functionality than necessary.
 
@@ -11,7 +11,7 @@
 #ifndef MOTOR_H
 #define MOTOR_H
 
-#include "config.h"
+#include "../config.h"
 
 // motor state bit-masks - to check if motor matches the state, use `state & BITMASK` (p.v. 0, 1...)
 #define RUNNING 0b1000
