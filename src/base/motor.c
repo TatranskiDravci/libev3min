@@ -15,7 +15,7 @@ motor motorNew(char port)
 
         if (!m.exists)
         {
-                printf("Motor not found on port %c\n", port);
+                fprintf(stderr, "Motor not found on port %c\n", port);
                 return m;
         }
 

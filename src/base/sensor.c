@@ -15,7 +15,7 @@ sensor sensorNew(char port)
 
         if (!s.exists)
         {
-                printf("Sensor not found on port %c\n", port);
+                fprintf(stderr, "Sensor not found on port %c\n", port);
                 return s;
         }
 
