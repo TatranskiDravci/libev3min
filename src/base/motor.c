@@ -11,7 +11,7 @@ motor motorNew(char port)
         motor m;
 
         char m_path[256];
-        m.exists = devicePath(m_path, port, 'm', MOTOR_PREFIX);
+        m.exists = devicePath(m_path, port, MOTOR, MOTOR_PREFIX);
 
         if (!m.exists)
         {
@@ -19,7 +19,6 @@ motor motorNew(char port)
                 return m;
         }
 
-        // copy address and concatenate appropriate file names
         strCopyConcat(m.speed_sp, m_path, "/speed_sp");
         strCopyConcat(m.target_sp, m_path, "/position_sp");
         strCopyConcat(m.command, m_path, "/command");

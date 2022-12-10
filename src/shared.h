@@ -34,6 +34,10 @@
                 fclose(fp);                             \
         })
 
-int devicePath(char *__path, char __port, char initial, char *prefix);
+#define SENSOR 's'
+#define MOTOR  'm'
+
+char devicePort(char *address, char type);
+int devicePath(char *__path, char port, char type, char *prefix);
 
 #endif

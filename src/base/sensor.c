@@ -11,7 +11,7 @@ sensor sensorNew(char port)
         sensor s;
 
         char s_path[256];
-        s.exists = devicePath(s_path, port, 's', SENSOR_PREFIX);
+        s.exists = devicePath(s_path, port, SENSOR, SENSOR_PREFIX);
 
         if (!s.exists)
         {
@@ -19,7 +19,6 @@ sensor sensorNew(char port)
                 return s;
         }
 
-        // copy address and concatenate appropriate file names
         strCopyConcat(s.command, s_path, "/command");
         strCopyConcat(s.value, s_path, "/value");
         strCopyConcat(s.mode, s_path, "/mode");
@@ -28,7 +27,7 @@ sensor sensorNew(char port)
         // cache decimals
         sensorReset(&s);
 
-        // cache length of `s.value` and shift null terminator
+        // `s.value` caching for future sensor readings
         s.value_len = strlen(s.value);
         s.value[s.value_len + 1] = '\0';
 
@@ -45,7 +44,6 @@ void sensorSetMode(sensor s, char *mode)
 
 void sensorReset(sensor *s)
 {
-        // update decimals
         int value;
         readValue(&value, s->decimals, "%d");
 
