@@ -3,50 +3,30 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <dirent.h>
 
 #include "../shared.h"
 
 motor motorNew(char port)
 {
         motor m;
-        m.exists = 0;
 
-        DIR *d;
-        struct dirent *dir;
-        d = opendir(MOTOR_PREFIX);
+        char m_path[256];
+        m.exists = devicePath(m_path, port, 'm', MOTOR_PREFIX);
 
-        if (d) while ((dir = readdir(d)) != NULL) if (dir->d_name[0] == 'm')
+        if (!m.exists)
         {
-                char m_path[256] = MOTOR_PREFIX;
-                char m_address[256], address;
-
-                strcat(m_path, dir->d_name);
-                strCopyConcat(m_address, m_path, "/address");
-
-                FILE *address_fp;
-                address_fp = fopen(m_address, "r");
-                fseek(address_fp, 13, SEEK_SET);
-                address = fgetc(address_fp);
-                fclose(address_fp);
-
-                // check if found motor port matches given port
-                if (port != address) continue;
-
-                // copy address and concatenate appropriate file names
-                strCopyConcat(m.speed_sp, m_path, "/speed_sp");
-                strCopyConcat(m.target_sp, m_path, "/position_sp");
-                strCopyConcat(m.command, m_path, "/command");
-                strCopyConcat(m.stop_action, m_path, "/stop_action");
-                strCopyConcat(m.position, m_path, "/position");
-                strCopyConcat(m.state, m_path, "/state");
-
-                m.exists = 1;
-                break;
+                printf("Motor not found on port %c\n", port);
+                return m;
         }
 
-        closedir(d);
-        if (!m.exists) printf("Motor not found on port %c\n", port);
+        // copy address and concatenate appropriate file names
+        strCopyConcat(m.speed_sp, m_path, "/speed_sp");
+        strCopyConcat(m.target_sp, m_path, "/position_sp");
+        strCopyConcat(m.command, m_path, "/command");
+        strCopyConcat(m.stop_action, m_path, "/stop_action");
+        strCopyConcat(m.position, m_path, "/position");
+        strCopyConcat(m.state, m_path, "/state");
+
         return m;
 }
 

@@ -1,7 +1,7 @@
 /*
         devnote:
-                shared.h defines macros for frequently occurring expressions.
-                Creating separate functions for these commonly occurring expressions
+                shared.h defines macros (and functions) for frequently occurring expressions.
+                Creating separate functions for some these commonly occurring expressions
                 would sacrifice execution speed, as it would require new function calls.
                 Thus, macros are used, sacrificing memory instead.
 */
@@ -33,5 +33,7 @@
                 fscanf(fp, format, target);             \
                 fclose(fp);                             \
         })
+
+int devicePath(char *__path, char __port, char initial, char *prefix);
 
 #endif

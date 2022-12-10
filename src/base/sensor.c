@@ -3,55 +3,35 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <dirent.h>
 
 #include "../shared.h"
 
 sensor sensorNew(char port)
 {
         sensor s;
-        s.exists = 0;
 
-        DIR *d;
-        struct dirent *dir;
-        d = opendir(SENSOR_PREFIX);
+        char s_path[256];
+        s.exists = devicePath(s_path, port, 's', SENSOR_PREFIX);
 
-        if (d) while ((dir = readdir(d)) != NULL) if (dir->d_name[0] == 's')
+        if (!s.exists)
         {
-                char s_path[256] = SENSOR_PREFIX;
-                char s_address[256], address;
-
-                strcat(s_path, dir->d_name);
-                strCopyConcat(s_address, s_path, "/address");
-
-                FILE *address_fp;
-                address_fp = fopen(s_address, "r");
-                fseek(address_fp, 12, SEEK_SET);
-                address = fgetc(address_fp);
-                fclose(address_fp);
-
-                // check if found sensor port matches given port
-                if (port != address) continue;
-
-                // copy address and concatenate appropriate file names
-                strCopyConcat(s.command, s_path, "/command");
-                strCopyConcat(s.value, s_path, "/value");
-                strCopyConcat(s.mode, s_path, "/mode");
-                strCopyConcat(s.decimals, s_path, "/decimals");
-
-                // cache decimals
-                sensorReset(&s);
-
-                // cache length of `s.value` and shift null terminator
-                s.value_len = strlen(s.value);
-                s.value[s.value_len + 1] = '\0';
-
-                s.exists = 1;
-                break;
+                printf("Sensor not found on port %c\n", port);
+                return s;
         }
 
-        closedir(d);
-        if (!s.exists) printf("Sensor not found on port %c\n", port);
+        // copy address and concatenate appropriate file names
+        strCopyConcat(s.command, s_path, "/command");
+        strCopyConcat(s.value, s_path, "/value");
+        strCopyConcat(s.mode, s_path, "/mode");
+        strCopyConcat(s.decimals, s_path, "/decimals");
+
+        // cache decimals
+        sensorReset(&s);
+
+        // cache length of `s.value` and shift null terminator
+        s.value_len = strlen(s.value);
+        s.value[s.value_len + 1] = '\0';
+
         return s;
 }
 
