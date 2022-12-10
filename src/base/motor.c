@@ -9,120 +9,103 @@
 
 motor motorNew(char port)
 {
-    motor m;
-    m.exists = 0;
+        motor m;
+        m.exists = 0;
 
-    DIR *d;
-    struct dirent *dir;
-    d = opendir(MOTOR_PREFIX);
+        DIR *d;
+        struct dirent *dir;
+        d = opendir(MOTOR_PREFIX);
 
-    if (d) while ((dir = readdir(d)) != NULL) if (dir->d_name[0] == 'm')
-    {
-        char m_path_pure[256] = MOTOR_PREFIX;
-        char m_address[256], address_buffer[15];
-
-        strcat(m_path_pure, dir->d_name);
-        strCopyConcat(m_address, m_path_pure, "/address");
-
-        FILE *address_fp;
-        address_fp = fopen(m_address, "r");
-        fgets(address_buffer, 15, address_fp);
-        fclose(address_fp);
-
-        // check if found motor port matches given port
-        if (port == address_buffer[13])
+        if (d) while ((dir = readdir(d)) != NULL) if (dir->d_name[0] == 'm')
         {
-            // copy address and concatenate appropriate file names
-            strCopyConcat(m.speed_sp, m_path_pure, "/speed_sp");
-            strCopyConcat(m.target_sp, m_path_pure, "/position_sp");
-            strCopyConcat(m.command, m_path_pure, "/command");
-            strCopyConcat(m.stop_action, m_path_pure, "/stop_action");
-            strCopyConcat(m.position, m_path_pure, "/position");
-            strCopyConcat(m.state, m_path_pure, "/state");
+                char m_path[256] = MOTOR_PREFIX;
+                char m_address[256], address;
 
-            m.exists = 1;
-            break;
+                strcat(m_path, dir->d_name);
+                strCopyConcat(m_address, m_path, "/address");
+
+                FILE *address_fp;
+                address_fp = fopen(m_address, "r");
+                fseek(address_fp, 13, SEEK_SET);
+                address = fgetc(address_fp);
+                fclose(address_fp);
+
+                // check if found motor port matches given port
+                if (port != address) continue;
+
+                // copy address and concatenate appropriate file names
+                strCopyConcat(m.speed_sp, m_path, "/speed_sp");
+                strCopyConcat(m.target_sp, m_path, "/position_sp");
+                strCopyConcat(m.command, m_path, "/command");
+                strCopyConcat(m.stop_action, m_path, "/stop_action");
+                strCopyConcat(m.position, m_path, "/position");
+                strCopyConcat(m.state, m_path, "/state");
+
+                m.exists = 1;
+                break;
         }
-    }
 
-    closedir(d);
-    if (!m.exists) printf("Motor not found on port %c\n", port);
-    return m;
+        closedir(d);
+        if (!m.exists) printf("Motor not found on port %c\n", port);
+        return m;
 }
 
 void motorSetPosition(motor m, int position)
 {
-    FILE *fp;
-    fp= fopen(m.position, "w");
-    fprintf(fp, "%d", position);
-    fclose(fp);
+        writeValue(m.position, position, "%d");
 }
 
-int motorPosition(motor m)
+int motorGetPosition(motor m)
 {
-    int position;
-
-    FILE *fp;
-    fp = fopen(m.position, "r");
-    fscanf(fp, "%d", &position);
-    fclose(fp);
-
-    return position;
+        int position;
+        readValue(&position, m.position, "%d");
+        return position;
 }
 
 void motorSetTarget(motor m, int target)
 {
-    FILE *fp;
-    fp = fopen(m.target_sp, "w");
-    fprintf(fp, "%d", target);
-    fclose(fp);
+        writeValue(m.target_sp, target, "%d");
 }
 
 void motorSetSpeed(motor m, int speed)
 {
-    FILE *fp;
-    fp = fopen(m.speed_sp, "w");
-    fprintf(fp, "%d", speed);
-    fclose(fp);
+        writeValue(m.speed_sp, speed, "%d");
 }
 
 void motorCommand(motor m, char *command)
 {
-    FILE *fp;
-    fp = fopen(m.command, "w");
-    fprintf(fp, "%s", command);
-    fclose(fp);
+        writeValue(m.command, command, "%s");
 }
 
 void motorSetStopAction(motor m, char *stop_action)
 {
-    FILE *fp;
-    fp = fopen(m.stop_action, "w");
-    fprintf(fp, "%s", stop_action);
-    fclose(fp);
+        writeValue(m.stop_action, stop_action, "%s");
 }
 
 int motorState(motor m)
 {
-    int state_mask;
-    state_mask = 0;
+        int state_mask;
+        state_mask = 0;
 
-    FILE *fp;
-    fp = fopen(m.state, "r");
+        FILE *fp;
+        fp = fopen(m.state, "r");
 
-    char states[32];
-    fgets(states, 32, fp);
-    fclose(fp);
+        char states[32];
+        fgets(states, 32, fp);
+        fclose(fp);
 
-    // mask bits based on characters unique for each state
-    while (*states != '\0') switch (*states)
-    {
-        case 'u':   state_mask |= RUNNING; states += 6; break;
-        case 'm':   state_mask |= RAMPING; states += 5; break;
-        case 'h':   state_mask |= HOLDING; states += 7; break;
-        case 's':   state_mask |= STALLED; states += 7; break;
-        default:    states++;
-    }
+        char *c;
+        c = states;
 
-    return state_mask;
+        // mask bits based on characters unique for each state
+        while (*c != '\0') switch (*c)
+        {
+                case 'u':   state_mask |= RUNNING; c += 6; break;
+                case 'm':   state_mask |= RAMPING; c += 5; break;
+                case 'h':   state_mask |= HOLDING; c += 7; break;
+                case 's':   state_mask |= STALLED; c += 7; break;
+                default:    c++;
+        }
+
+        return state_mask;
 }

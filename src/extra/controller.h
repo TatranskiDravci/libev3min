@@ -14,7 +14,7 @@
 
 typedef struct Controller
 {
-    int socket, client, status;
+        int socket, client, status;
 }
 controller;
 

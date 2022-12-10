@@ -1,15 +1,15 @@
 /*
-    devnote:
-        base/ drivers should be kept in a bare-minimum state to ensure
-        flexibility and efficiency. Avoid providing higher level
-        functionality than necessary.
+        devnote:
+                base/ drivers should be kept in a bare-minimum state to ensure
+                flexibility and efficiency. Avoid providing higher level
+                functionality than necessary.
 
-        All code here is ev3 specific.
+                All code here is ev3 specific.
 
-        p.v. - possible values
+                p.v. - possible values
 
-        Check https://docs.ev3dev.org/projects/lego-linux-drivers/en/ev3dev-stretch/sensors.html#sysfs
-        for more info on sensors.
+                Check https://docs.ev3dev.org/projects/lego-linux-drivers/en/ev3dev-stretch/sensors.html#sysfs
+                for more info on sensors.
 */
 #ifndef SENSOR_H
 #define SENSOR_H
@@ -18,13 +18,13 @@
 
 typedef struct Sensor
 {
-    char command[PATH_LEN];                             // command file path
-    char value[PATH_LEN];                               // value<N> file path
-    char mode[PATH_LEN];                                // mode file path
-    char decimals[PATH_LEN];                            // decimals file path
-    double decimal;                                     // decimals constant
-    int value_len;                                      // strlen() of value
-    int exists;                                         // sensor existence (p.v. 1 - exists, 0 - does not exist)
+        char command[PATH_LEN];                         // command file path
+        char value[PATH_LEN];                           // value<N> file path
+        char mode[PATH_LEN];                            // mode file path
+        char decimals[PATH_LEN];                        // decimals file path
+        double decimal;                                 // decimals constant
+        int value_len;                                  // strlen() of value
+        int exists;                                     // sensor existence (p.v. 1 - exists, 0 - does not exist)
 }
 sensor;
 
