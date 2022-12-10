@@ -19,10 +19,8 @@ int devicePath(char *__path, char __port, char initial, char *prefix)
                 strcat(path, dir->d_name);
                 strCopyConcat(address, path, "/address");
 
-
                 FILE *address_fp;
                 address_fp = fopen(address, "r");
-
 
                 switch (initial)
                 {
