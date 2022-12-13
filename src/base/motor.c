@@ -6,59 +6,65 @@
 
 #include "../shared.h"
 
+const char *MOTOR_INIT_PATH[6] = {"/speed", "/position_sp", "/command", "/stop_action", "/position", "/state"};
+const int  MOTOR_INIT_LEN[6]   = {6, 12, 8, 12, 9, 6};
+
 motor motorNew(char port)
 {
         motor m;
 
-        char m_path[256];
-        m.exists = devicePath(m_path, port, MOTOR, MOTOR_PREFIX);
+        char *path;
+        int path_len;
+        path_len = devicePath(&path, port, MOTOR, MOTOR_PREFIX);
 
-        if (!m.exists)
+        if (!path_len)
         {
+                m.exists = 0;
                 fprintf(stderr, "Motor not found on port %c\n", port);
                 return m;
         }
+        m.exists = 1;
 
-        strCopyConcat(m.speed_sp, m_path, "/speed_sp");
-        strCopyConcat(m.target_sp, m_path, "/position_sp");
-        strCopyConcat(m.command, m_path, "/command");
-        strCopyConcat(m.stop_action, m_path, "/stop_action");
-        strCopyConcat(m.position, m_path, "/position");
-        strCopyConcat(m.state, m_path, "/state");
+        for (int i = 0; i < 6; i++)
+        {
+                m.paths[i] = malloc((path_len + MOTOR_INIT_LEN[i]) * sizeof(char));
+                strcpy(m.paths[i], path);
+                strcat(m.paths[i], MOTOR_INIT_PATH[i]);
+        }
 
         return m;
 }
 
 void motorSetPosition(motor m, int position)
 {
-        writeValue(m.position, position, "%d");
+        writeValue(m.paths[M_Position], position, "%d");
 }
 
 int motorGetPosition(motor m)
 {
         int position;
-        readValue(&position, m.position, "%d");
+        readValue(&position, m.paths[M_Position], "%d");
         return position;
 }
 
 void motorSetTarget(motor m, int target)
 {
-        writeValue(m.target_sp, target, "%d");
+        writeValue(m.paths[M_Target], target, "%d");
 }
 
 void motorSetSpeed(motor m, int speed)
 {
-        writeValue(m.speed_sp, speed, "%d");
+        writeValue(m.paths[M_Speed], speed, "%d");
 }
 
 void motorCommand(motor m, char *command)
 {
-        writeValue(m.command, command, "%s");
+        writeValue(m.paths[M_Command], command, "%s");
 }
 
 void motorSetStopAction(motor m, char *stop_action)
 {
-        writeValue(m.stop_action, stop_action, "%s");
+        writeValue(m.paths[M_StopAction], stop_action, "%s");
 }
 
 int motorState(motor m)
@@ -67,7 +73,7 @@ int motorState(motor m)
         state_mask = 0;
 
         FILE *fp;
-        fp = fopen(m.state, "r");
+        fp = fopen(m.paths[M_State], "r");
 
         char states[32];
         fgets(states, 32, fp);

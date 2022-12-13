@@ -22,15 +22,21 @@
 
 typedef struct Motor
 {
-        char speed_sp[PATH_LEN];                            // speed setpoint file path
-        char target_sp[PATH_LEN];                           // target setpoint file path
-        char command[PATH_LEN];                             // command file path
-        char stop_action[PATH_LEN];                         // stop action file path
-        char position[PATH_LEN];                            // position file path
-        char state[PATH_LEN];                               // state file path
-        int exists;                                         // motor existence (p.v. 1 - exists, 0 - does not exist)
+        char *paths[6];
+        int exists;
 }
 motor;
+
+typedef enum MotorResourceSelector
+{
+        M_Speed,
+        M_Target,
+        M_Command,
+        M_StopAction,
+        M_Position,
+        M_State
+}
+mres;
 
 motor motorNew(char port);                                  // `motor` constructor, initializes `motor` type
 void motorSetPosition(motor m, int position);               // sets motor position variable to `position`

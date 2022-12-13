@@ -12,12 +12,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define strCopyConcat(target, source, concat)           \
-        ({                                              \
-                strcpy(target, source);                 \
-                strcat(target, concat);                 \
-        })
-
 #define writeValue(target, value, format)               \
         ({                                              \
                 FILE *fp;                               \
@@ -38,6 +32,6 @@
 #define MOTOR  'm'
 
 char devicePort(char *address, char type);
-int devicePath(char *__path, char port, char type, char *prefix);
+int devicePath(char **__path, char port, char type, char *prefix);
 
 #endif

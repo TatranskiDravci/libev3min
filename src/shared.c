@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "config.h"
+
 char devicePort(char *address, char type)
 {
         char port;
@@ -23,7 +25,7 @@ char devicePort(char *address, char type)
         return port;
 }
 
-int devicePath(char *__path, char port, char type, char *prefix)
+int devicePath(char **__path, char port, char type, char *prefix)
 {
         DIR *d;
         struct dirent *dir;
@@ -31,17 +33,23 @@ int devicePath(char *__path, char port, char type, char *prefix)
 
         if (d) while ((dir = readdir(d)) != NULL) if (dir->d_name[0] == type)
         {
-                char path[256], address[256];
+                int dir_len;
+                dir_len = strlen(dir->d_name) + PATH_LEN + 1;
+
+                char path[dir_len];
+                char address[dir_len + 8];
 
                 strcpy(path, prefix);
                 strcat(path, dir->d_name);
-                strCopyConcat(address, path, "/address");
+                strcpy(address, path);
+                strcat(address, "/address");
 
                 if (port != devicePort(address, type)) continue;
 
-                strcpy(__path, path);
+                *__path = malloc(dir_len * sizeof(char));
+                strcpy(*__path, path);
                 closedir(d);
-                return 1;
+                return dir_len;
         }
 
         closedir(d);

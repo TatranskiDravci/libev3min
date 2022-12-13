@@ -7,29 +7,16 @@
 int main(int argc, char *argv[])
 {
         motor m;
+        sensor s;
+
         m = motorNew('A');
+        s = sensorNew('1');
 
         if (!m.exists) return 1;
+        if (!s.exists) return 1;
 
-        motorReset(m);
-        motorSetSpeed(m, 200);
-        motorSetTarget(m, 360);
-        motorSetStopAction(m, "hold");
-        motorCommand(m, "run-to-rel-pos");
-
-        int state;
-        state = motorState(m);
-
-        printf("state[%d]:", state);
-        if (state & RAMPING) printf(" ramping");
-        if (state & HOLDING) printf(" holding");
-        if (state & STALLED) printf(" stalled");
-        if (state & RUNNING) printf(" running");
-        printf("\n");
-
-        sensor s;
-        s = sensorNew('1');
-        printf("value: %f\n", sensorReadDecimal(s, '0'));
+        for (int i = 0; i < 1000000; i++) motorState(m);
+        for (int i = 0; i < 1000000; i++) sensorReadDecimal(s, '0');
 
         return 0;
 }
