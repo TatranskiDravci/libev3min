@@ -1,13 +1,10 @@
-# cdrivers
-(Somewhat) minimalist C/C++ EV3 drivers
+# ev3dev-clib-min
+(Somewhat) minimalist C/C++ EV3 API
 
 ## Project structure
- - **`src/`** - contains driver .c and .h files
-    - **`base/`** - provides utilities for basic device control
-        - `motor(.c, .h)` - motor control module
-        - `sensor(.c, .h)` - sensor control module
-    - **`extra/`** - additional drivers for external control / expansion
-        - `controller(.c, .h)` - sockets-based resource transmission module
+ - **`src/`** - contains API .c and .h files
+    - `motor(.c, .h)` - motor control module
+    - `sensor(.c, .h)` - sensor control module
     - `shared(.c, .h)` - shared macros and functions
     - `config.h` - configures path prefixes
  - **`testenv/`** - testing environment
@@ -20,14 +17,14 @@
     - `Makefile` - instructions for GNU-ARM and GNU-x86_64 compilation
 
 ## Using testenv
-Testenv allows for debugging and testing of driver functionality on x86_64 machines without the need for an ARM processor or arm-linux-gnueabi toolchain. 
+Testenv allows for debugging and testing of API functionality on x86_64 machines without the need for an ARM processor or arm-linux-gnueabi toolchain.
 ### Configuring `config.h`
-When using cdrivers on a lego robot, path prefixes in `config.h` should be absolute, as the `/sys/` directory is located in `/`
+When using ev3dev-clib-min on a lego robot, path prefixes in `config.h` should be absolute, as the `/sys/` directory is located in `/`
 ```c
 #define SENSOR_PREFIX "/sys/class/lego-sensor/"
 #define MOTOR_PREFIX  "/sys/class/tacho-motor/"
-``` 
-When using cdrivers in testenv, however, path prefixes **must be relative** to the current directory, `./` (if the program is ran in `testenv/` director, that is)
+```
+When using ev3dev-clib-min in testenv, however, path prefixes **must be relative** to the current directory, `./` (if the program is ran in `testenv/` director, that is)
 ```c
 #define SENSOR_PREFIX "./sys/class/lego-sensor/"
 #define MOTOR_PREFIX  "./sys/class/tacho-motor/"
