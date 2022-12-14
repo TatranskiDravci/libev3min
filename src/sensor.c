@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../shared.h"
+#include "shared.h"
 
 const char *SENSOR_INIT_PATH[4] = {"/command", "/value", "/mode", "/decimals"};
 const int  SENSOR_INIT_LEN[6]   = {8, 7, 5, 9};

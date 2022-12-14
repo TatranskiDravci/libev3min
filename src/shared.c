@@ -3,8 +3,9 @@
 #include <dirent.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-#include "config.h"
+#include "../config.h"
 
 char devicePort(char *address, char type)
 {
@@ -48,7 +49,7 @@ int devicePath(char **__path, char port, char type, char *prefix)
 
                 *__path = malloc(dir_len * sizeof(char));
                 strcpy(*__path, path);
-                
+
                 closedir(d);
                 return dir_len;
         }

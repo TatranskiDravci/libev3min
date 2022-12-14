@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../shared.h"
+#include "shared.h"
 
 const char *MOTOR_INIT_PATH[6] = {"/speed", "/position_sp", "/command", "/stop_action", "/position", "/state"};
 const int  MOTOR_INIT_LEN[6]   = {6, 12, 8, 12, 9, 6};

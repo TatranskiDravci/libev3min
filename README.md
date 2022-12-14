@@ -2,11 +2,17 @@
 (Somewhat) minimalist C/C++ EV3 API
 
 ## Project structure
- - **`src/`** - contains API .c and .h files
-    - `motor(.c, .h)` - motor control module
-    - `sensor(.c, .h)` - sensor control module
-    - `shared(.c, .h)` - shared macros and functions
-    - `config.h` - configures path prefixes
+ - **`src/`** - contains API source code files
+    - `motor.c` - motor control module
+    - `sensor.c` - sensor control module
+    - `shared.c` - shared macros and functions
+ - **`include/`** - contains API headers
+     - `motor.h` - motor.c header
+    - `sensor.h` - sensor.c header
+    - `shared.h` - shared.c header
+ - `config.h` - configures path prefixes
+ - `Makefile` - instructions for shared library compilation, use `cc=gcc` if compiling for x86_64
+
  - **`testenv/`** - testing environment
     - **`build/`** - compiled testing programs
         - `test_gnu_arm` - compiled for ARM architecture
