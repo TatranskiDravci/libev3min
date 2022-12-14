@@ -31,7 +31,7 @@ When using ev3dev-clib-min in testenv, however, path prefixes **must be relative
 #define SENSOR_PREFIX "./sys/class/lego-sensor/"
 #define MOTOR_PREFIX  "./sys/class/tacho-motor/"
 ```
-Notice the change in `PATH_LEN`. `PATH_LEN` describes the string lenght of both `SENSOR_PREFIX` and `MOTOR_PREFIX`. Currently there is no reason for two separate `PATH_LEN` as in ev3dev and in testenv, both have the same length.
+Notice the change in `PATH_LEN`. `PATH_LEN` describes the string lenght of both `SENSOR_PREFIX` and `MOTOR_PREFIX`. Currently there is no reason for two separate `PATH_LEN`s as in ev3dev and in testenv, both have the same length.
 ### Building and executing
 (Assuming the testing code is situated in `main.c`) To build a testing program, execute
 ```sh
