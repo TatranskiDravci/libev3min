@@ -6,8 +6,15 @@
 
 #include "shared.h"
 
-const char *MOTOR_INIT_PATH[6] = {"/speed", "/position_sp", "/command", "/stop_action", "/position", "/state"};
-const int  MOTOR_INIT_LEN[6]   = {6, 12, 8, 12, 9, 6};
+const char *MOTOR_INIT_PATH[6] = {      "/speed",
+                                        "/position_sp",
+                                        "/command",
+                                        "/stop_action",
+                                        "/position",
+                                        "/state"        };
+
+const int MOTOR_INIT_LEN[6] = { 6, 12, 8, 12, 9, 6 };
+
 
 motor motorNew(char port)
 {
@@ -15,15 +22,14 @@ motor motorNew(char port)
 
         char *path;
         int path_len;
-        path_len = devicePath(&path, port, MOTOR, MOTOR_PREFIX);
 
-        if (!path_len)
+        m.exists = devicePath(&path, &path_len, port, DEVT_Motor);
+
+        if (!m.exists)
         {
-                m.exists = 0;
                 fprintf(stderr, "Motor not found on port %c\n", port);
                 return m;
         }
-        m.exists = 1;
 
         for (int i = 0; i < 6; i++)
         {
@@ -31,6 +37,7 @@ motor motorNew(char port)
                 strcpy(m.paths[i], path);
                 strcat(m.paths[i], MOTOR_INIT_PATH[i]);
         }
+        free(path);
 
         return m;
 }

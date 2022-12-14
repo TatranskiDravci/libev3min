@@ -30,7 +30,13 @@
 #define SENSOR 's'
 #define MOTOR  'm'
 
-char devicePort(char *address, char type);
-int devicePath(char **__path, char port, char type, char *prefix);
+typedef enum DeviceType
+{
+        DEVT_Sensor = 's',
+        DEVT_Motor  = 'm'
+}
+devtype;
+
+int devicePath(char **__path, int *__path_len, char port, devtype type);
 
 #endif

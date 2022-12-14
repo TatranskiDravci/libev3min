@@ -6,8 +6,13 @@
 
 #include "shared.h"
 
-const char *SENSOR_INIT_PATH[4] = {"/command", "/value", "/mode", "/decimals"};
-const int  SENSOR_INIT_LEN[6]   = {8, 7, 5, 9};
+const char *SENSOR_INIT_PATH[4] = {     "/command",
+                                        "/value",
+                                        "/mode",
+                                        "/decimals"     };
+
+const int SENSOR_INIT_LEN[6] = { 8, 7, 5, 9 };
+
 
 sensor sensorNew(char port)
 {
@@ -15,15 +20,14 @@ sensor sensorNew(char port)
 
         char *path;
         int path_len;
-        path_len = devicePath(&path, port, SENSOR, SENSOR_PREFIX);
 
-        if (!path_len)
+        s.exists = devicePath(&path, &path_len, port, DEVT_Sensor);
+
+        if (!s.exists)
         {
-                s.exists = 0;
                 fprintf(stderr, "Sensor not found on port %c\n", port);
                 return s;
         }
-        s.exists = 1;
 
         for (int i = 0; i < 4; i++)
         {
@@ -31,6 +35,7 @@ sensor sensorNew(char port)
                 strcpy(s.paths[i], path);
                 strcat(s.paths[i], SENSOR_INIT_PATH[i]);
         }
+        free(path);
 
         // cache decimals
         sensorReset(&s);

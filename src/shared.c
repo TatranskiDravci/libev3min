@@ -26,34 +26,45 @@ char devicePort(char *address, char type)
         return port;
 }
 
-int devicePath(char **__path, char port, char type, char *prefix)
+const char *pathPrefix(devtype type)
 {
+        switch (type)
+        {
+                case DEVT_Sensor: return SENSOR_PREFIX;
+                case DEVT_Motor:  return MOTOR_PREFIX;
+        }
+        return '\0';
+}
+
+int devicePath(char **__path, int *__path_len, char port, devtype type)
+{
+        const char *prefix = pathPrefix(type);
+
         DIR *d;
         struct dirent *dir;
         d = opendir(prefix);
 
-        if (d) while ((dir = readdir(d)) != NULL) if (dir->d_name[0] == type)
+        if (!d) return 0;
+
+        int status;
+
+        while ((dir = readdir(d)) != NULL) if (dir->d_name[0] == type)
         {
-                int dir_len;
-                dir_len = strlen(dir->d_name) + PATH_LEN + 1;
+                *__path_len = strlen(dir->d_name) + PATH_LEN + 1;
+                *__path = calloc(*__path_len, sizeof(char));
 
-                char path[dir_len];
-                char address[dir_len + 8];
+                char address[*__path_len + 8];          // address file path buffer
 
-                strcpy(path, prefix);
-                strcat(path, dir->d_name);
-                strcpy(address, path);
+                strcpy(*__path, prefix);
+                strcat(*__path, dir->d_name);
+                strcpy(address, *__path);
                 strcat(address, "/address");
 
-                if (port != devicePort(address, type)) continue;
+                if ((status = (port == devicePort(address, type)))) break;
 
-                *__path = malloc(dir_len * sizeof(char));
-                strcpy(*__path, path);
-
-                closedir(d);
-                return dir_len;
+                free(*__path);
         }
 
         closedir(d);
-        return 0;
+        return status;
 }
