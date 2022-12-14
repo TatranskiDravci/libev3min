@@ -1,4 +1,4 @@
-# ev3dev-clib-min
+# libev3min
 (Somewhat) minimalist C/C++ EV3 API
 
 ## Project structure
