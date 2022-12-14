@@ -38,13 +38,14 @@ typedef enum MotorResourceSelector
 }
 mres;
 
-motor motorNew(char port);                                  // `motor` constructor, initializes `motor` type
-void motorSetPosition(motor m, int position);               // sets motor position variable to `position`
-int motorGetPosition(motor m);                              // returns motor position
-void motorSetSpeed(motor m, int speed);                     // sets motor speed
-void motorSetTarget(motor m, int target);                   // sets target angle on motor
-void motorCommand(motor m, char *command);                  // sends command to a motor (e.g. "run-forever", "stop")
-void motorSetStopAction(motor m, char *stop_action);        // sets stop action of a motor (p.v. "coast", "brake", "hold")
-int motorState(motor m);                                    // returns motor state bitmask
+motor motorNew(char port);                                      // `motor` constructor, initializes `motor` type
+void motorSetPosition(motor m, int position);                   // sets motor position variable to `position`
+int motorGetPosition(motor m);                                  // returns motor position
+void motorSetSpeed(motor m, int speed);                         // sets motor speed
+void motorSetTarget(motor m, int target);                       // sets target angle on motor
+void motorCommand(motor m, char *command);                      // sends command to a motor (e.g. "run-forever", "stop")
+void motorSetStopAction(motor m, char *stop_action);            // sets stop action of a motor (p.v. "coast", "brake", "hold")
+int motorState(motor m);                                        // returns motor state bitmask
+void motorFree(motor *m);                                       // what no garbage collector does to a mf
 
 #endif

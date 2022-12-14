@@ -74,3 +74,8 @@ double sensorReadDecimal(sensor s, char n)
 {
         return s.decimal * sensorRead(s, n);
 }
+
+void sensorFree(sensor *s)
+{
+        for (int i = 0; i < 4; i++) free(s->paths[i]);
+}

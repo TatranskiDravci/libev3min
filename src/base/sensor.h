@@ -40,6 +40,7 @@ void sensorCommand(sensor s, char *command);            // sends command to sens
 int sensorRead(sensor s, char n);                       // reads nth value on sensor (n must be char)
 double sensorReadDecimal(sensor s, char n);             // reads nth value on sensor and converts it to actual decimal reading (n must be char)
 void sensorReset(sensor *s);                            // resets sensor and recaches decimal and value_count
+void sensorFree(sensor *s);                             // what no garbage collector does to a mf
 
 
 #endif

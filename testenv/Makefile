@@ -6,4 +6,4 @@ GNU-ARM: $(BUILD)
 	arm-linux-gnueabi-gcc $^ -o ./build/test_gnu_arm
 
 GNU-x86_64: $(BUILD)
-	gcc -O2 $^ -o ./build/test_gnu_x86_64
+	gcc -O $^ -o ./build/test_gnu_x86_64

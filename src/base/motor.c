@@ -94,3 +94,8 @@ int motorState(motor m)
 
         return state_mask;
 }
+
+void motorFree(motor *m)
+{
+        for (int i = 0; i < 6; i++) free(m->paths[i]);
+}

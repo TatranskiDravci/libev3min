@@ -15,8 +15,11 @@ int main(int argc, char *argv[])
         if (!m.exists) return 1;
         if (!s.exists) return 1;
 
-        for (int i = 0; i < 1000000; i++) motorState(m);
-        for (int i = 0; i < 1000000; i++) sensorReadDecimal(s, '0');
+        for (int i = 0; i < 10000; i++) motorState(m);
+        for (int i = 0; i < 10000; i++) sensorReadDecimal(s, '0');
+
+        motorFree(&m);
+        sensorFree(&s);
 
         return 0;
 }

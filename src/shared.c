@@ -48,6 +48,7 @@ int devicePath(char **__path, char port, char type, char *prefix)
 
                 *__path = malloc(dir_len * sizeof(char));
                 strcpy(*__path, path);
+                
                 closedir(d);
                 return dir_len;
         }
