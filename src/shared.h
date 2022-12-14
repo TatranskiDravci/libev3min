@@ -8,7 +8,6 @@
 #ifndef SHARED_H
 #define SHARED_H
 
-#include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 
