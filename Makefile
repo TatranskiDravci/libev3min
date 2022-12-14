@@ -1,7 +1,7 @@
 source = src
 include = include
 build ?= build
-flags ?= -O -Wall -Werror
+flags ?= -O -Wall -Werror -Wextra
 cc ?= arm-linux-gnueabi-gcc
 
 sources ?= $(wildcard $(source)/*.c)

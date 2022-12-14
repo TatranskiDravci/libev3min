@@ -48,7 +48,7 @@ int devicePath(char **__path, int *__path_len, char port, devtype type)
 
         int status;
 
-        while ((dir = readdir(d)) != NULL) if (dir->d_name[0] == type)
+        while ((dir = readdir(d)) != NULL) if ((devtype) dir->d_name[0] == type)
         {
                 *__path_len = strlen(dir->d_name) + PATH_LEN + 1;
                 *__path = calloc(*__path_len, sizeof(char));
