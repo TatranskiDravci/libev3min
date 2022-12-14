@@ -1,5 +1,5 @@
-BUILD =  main.c ../src/base/motor.c ../src/base/sensor.c ../src/extra/controller.c ../src/shared.c
-FLAGS ?= -O 
+BUILD =  main.c ../src/base/motor.c ../src/base/sensor.c ../src/shared.c
+FLAGS ?= -O
 
 all: GNU-ARM GNU-x86_64
 
